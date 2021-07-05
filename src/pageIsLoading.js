@@ -1,7 +1,7 @@
 // demo
 // pageIsLoading({
 //     el: '.body',
-//     each: function(element, index, total, progress){},
+//     each: function(loaded, total, progress, element){},
 //     load: function(){}
 // })
 
@@ -12,6 +12,7 @@ function pageIsLoading(options = {}) {
     let allFiles = [];
     let allFilesLen = 0;
     let allFilesLoaded = 0;
+    const matchURL = /url\(\s*(['"]?)(.*?)\1\s*\)/g;
     
     // 检查
     if(el == null || el === ''){
@@ -45,15 +46,66 @@ function pageIsLoading(options = {}) {
             bgSrc && 
             bgSrc !== 'none'
         ){
-            allFiles.push({
-                element,
-                src: bgSrc // TODO:这里需要正则获取地址
-            })
+            // 背景图片可能存在多图的情况，这里使用while循环将所有图片url匹配出来，直到mathRes = null
+            let mathRes;
+            while(mathRes = matchURL.exec(bgSrc)){
+                allFiles.push({
+                    element,
+                    src: mathRes[2] // 真实的图片url，为正则的第二个子表达式
+                })
+            }
         }
     }
 
-    console.log(allFiles);
-    
+    // 收集完毕，得到需要加载的资源总数
+    allFilesLen = allFiles.length;
+
+
+    if(allFilesLen === 0){
+        runLoad(load);
+        return
+    }
+
+    for (let index = 0; index < allFilesLen; index++) {
+
+        let item = allFiles[index];
+        let img = new Image();
+
+        // 失败或者成功都计为加载完成
+        ['load', 'error'].forEach((event) => {
+            img.addEventListener(event, () => {
+                allFilesLoaded++;
+                runEach(allFilesLoaded, allFilesLen, item.element, each);
+                if(allFilesLoaded === allFilesLen){
+                    runLoad(load);
+                }
+                img = null;
+            })
+        })
+
+        img.src = item.src;
+    }
+}
+
+function runLoad(fn){
+    if(!fn){
+        return
+    }
+    if(typeof fn !== 'function'){
+        throw new TypeError('load is not a function');
+    }
+    fn();
+}
+
+function runEach(loaded, total, element, fn) {
+    if(!fn){
+        return
+    }
+    if(typeof fn !== 'function'){
+        throw new TypeError('load is not a function');
+    }
+    let progress = loaded / total;
+    fn(loaded, total, progress, element);
 }
 
 export default pageIsLoading

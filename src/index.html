@@ -8,8 +8,11 @@
     <style>
         .bg{
             width: 100px;
-            height: 100px;
-            background: url('https://t7.baidu.com/it/u=2405382010,1555992666&fm=193&f=GIF') no-repeat;
+            height: 500px;
+            background: url('https://t7.baidu.com/it/u=2405382010,1555992666&fm=193&f=GIF') no-repeat, 
+            url('https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F21%2F20180421134833_CG53d.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1627981232&t=3f5a1b4fdda0041c7ed0fa932da4b9e5') no-repeat;
+            background-size: 100% auto, 100% auto;
+            background-position: 0 0, 0, 50%;
         }
     </style>
 </head>
@@ -20,7 +23,17 @@
     <div></div>
     <script type="module">
         import pageIsLoading from './pageIsLoading.js'
-        pageIsLoading();
+        window.onload = () => {
+            console.log('window load', Date.now());
+        }
+        pageIsLoading({
+            each: (loaded, total, progress, element) => {
+                console.log(loaded, total, Math.floor(progress * 100) + '%',);
+            },
+            load: () => {
+                console.log('ok', Date.now());
+            }
+        });
     </script>
 </body>
 </html>
