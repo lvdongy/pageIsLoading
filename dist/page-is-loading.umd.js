@@ -1,0 +1,6 @@
+/*!
+ * page-is-loading v1.0.0
+ * Fri Jul 23 2021, lvdongy
+ * Released under the MIT License.
+ */
+!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e="undefined"!=typeof globalThis?globalThis:e||self).pageIsLoading=n()}(this,(function(){"use strict";function e(e){if(e){if("function"!=typeof e)throw new TypeError("load is not a function");e()}}function n(e,n,o,t){if(t){if("function"!=typeof t)throw new TypeError("load is not a function");t(e,n,e/n,o)}}return function(){var o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=o.el,r=o.each,f=o.load,i=[],u=[],c=0,d=0,a=/url\(\s*(['"]?)(.*?)\1\s*\)/g;if(!(t=null==t||""===t?document.body:document.querySelector(t)))throw new TypeError("Node not found: "+t);i=t.getElementsByTagName("*");for(var l=0;l<i.length;l++){var s=i[l];"IMG"===s.nodeName&&s.src&&u.push({element:s,src:s.src});var p=window.getComputedStyle(s).backgroundImage;if(p&&"none"!==p)for(var g=void 0;g=a.exec(p);)u.push({element:s,src:g[2]})}if(0!==(c=u.length))for(var m=function(o){var t=u[o],i=new Image;["load","error"].forEach((function(o){i.addEventListener(o,(function(){n(++d,c,t.element,r),d===c&&e(f),i=null}))})),i.src=t.src},h=0;h<c;h++)m(h);else e(f)}}));

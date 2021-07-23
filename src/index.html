@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        #loading{
+            background: #fff;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: rgb(70, 70, 70);
+        }
         .bg{
             width: 100px;
             height: 500px;
@@ -17,23 +30,37 @@
     </style>
 </head>
 <body>
-    <img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.php.cn%2Fupload%2Fstudy%2F001%2F000%2F007%2F5ca41beb7e448885.jpg&imgrefurl=https%3A%2F%2Fwww.css88.com%2Fdoc%2Fhtml%2Ftags%2Fav-event-progress%2F&tbnid=zH6_oiQRuYDvTM&vet=12ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC..i&docid=E9RvpO75Ya3yJM&w=800&h=320&itg=1&q=img%20onprogress&ved=2ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC" alt="">
+    <div id="loading">
+        <div id="rate"></div>
+    </div>
+    <!-- <img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.php.cn%2Fupload%2Fstudy%2F001%2F000%2F007%2F5ca41beb7e448885.jpg&imgrefurl=https%3A%2F%2Fwww.css88.com%2Fdoc%2Fhtml%2Ftags%2Fav-event-progress%2F&tbnid=zH6_oiQRuYDvTM&vet=12ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC..i&docid=E9RvpO75Ya3yJM&w=800&h=320&itg=1&q=img%20onprogress&ved=2ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC" alt=""> -->
     <img src="https://t7.baidu.com/it/u=1951548898,3927145&fm=193&f=GIF" alt="">
     <div class="bg"></div>
     <div></div>
+
     <script type="module">
-        import pageIsLoading from './pageIsLoading.js'
+        import pageIsLoading from '../dist/page-is-loading.esm.js'
         window.onload = () => {
             console.log('window load', Date.now());
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM");
+        })
+        let rateEle = document.getElementById('rate');
         pageIsLoading({
             each: (loaded, total, progress, element) => {
-                console.log(loaded, total, Math.floor(progress * 100) + '%',);
+                let rate = Math.floor(progress * 100) + '%'
+                console.log(loaded, total, rate);
+                rateEle.innerText = rate;
             },
             load: () => {
+                document.getElementById('loading').style.display = 'none';
                 console.log('ok', Date.now());
             }
         });
     </script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.2/vue.global.js"></script> -->
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> -->
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> -->
 </body>
 </html>

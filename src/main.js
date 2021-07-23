@@ -48,7 +48,7 @@ function pageIsLoading(options = {}) {
         ){
             // 背景图片可能存在多图的情况，这里使用while循环将所有图片url匹配出来，直到mathRes = null
             let mathRes;
-            while(mathRes = matchURL.exec(bgSrc)){
+            while((mathRes = matchURL.exec(bgSrc))){
                 allFiles.push({
                     element,
                     src: mathRes[2] // 真实的图片url，为正则的第二个子表达式
@@ -59,7 +59,6 @@ function pageIsLoading(options = {}) {
 
     // 收集完毕，得到需要加载的资源总数
     allFilesLen = allFiles.length;
-
 
     if(allFilesLen === 0){
         runLoad(load);
