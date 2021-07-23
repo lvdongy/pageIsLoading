@@ -14,16 +14,31 @@
             left: 0;
             top: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             font-size: 24px;
             color: rgb(70, 70, 70);
         }
+        .progress{
+            width: 300px;
+            height: 10px;
+            border: 1px solid rgb(196, 196, 196);
+            margin-top: 24px;
+            border-radius: 6px;
+        }
+        .progress-value{
+            height: 100%;
+            width: 0;
+            background: cadetblue;
+            border-radius: 6px;
+            transition: all .28s linear;
+        }
         .bg{
             width: 100px;
             height: 500px;
-            background: url('https://t7.baidu.com/it/u=2405382010,1555992666&fm=193&f=GIF') no-repeat, 
-            url('https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F21%2F20180421134833_CG53d.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1627981232&t=3f5a1b4fdda0041c7ed0fa932da4b9e5') no-repeat;
+            background: url('http://10.3.53.50:3000/1000.png') no-repeat, 
+            url('http://10.3.53.50:3000/2000.jpeg') no-repeat;
             background-size: 100% auto, 100% auto;
             background-position: 0 0, 0, 50%;
         }
@@ -32,26 +47,35 @@
 <body>
     <div id="loading">
         <div id="rate"></div>
+        <div class="progress">
+            <div class="progress-value" id="progress"></div>
+        </div>
     </div>
-    <!-- <img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.php.cn%2Fupload%2Fstudy%2F001%2F000%2F007%2F5ca41beb7e448885.jpg&imgrefurl=https%3A%2F%2Fwww.css88.com%2Fdoc%2Fhtml%2Ftags%2Fav-event-progress%2F&tbnid=zH6_oiQRuYDvTM&vet=12ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC..i&docid=E9RvpO75Ya3yJM&w=800&h=320&itg=1&q=img%20onprogress&ved=2ahUKEwj29NbZvsbxAhVLR5QKHbLsCIAQMygIegQIARBC" alt=""> -->
-    <img src="https://t7.baidu.com/it/u=1951548898,3927145&fm=193&f=GIF" alt="">
+    <img src="http://10.3.53.50:3000/3000.jpeg">
+    <img src="http://10.3.53.50:3000/3500.jpeg">
+    <img src="http://10.3.53.50:3000/5000.jpeg">
+    <img src="http://10.3.53.50:3000/5500.jpeg">
     <div class="bg"></div>
-    <div></div>
 
+    <!-- <script src="../dist/page-is-loading.min.js"></script> -->
     <script type="module">
         import pageIsLoading from '../dist/page-is-loading.esm.js'
+
         window.onload = () => {
             console.log('window load', Date.now());
         }
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM");
         })
+
         let rateEle = document.getElementById('rate');
+        let p = document.getElementById('progress');
         pageIsLoading({
             each: (loaded, total, progress, element) => {
                 let rate = Math.floor(progress * 100) + '%'
-                console.log(loaded, total, rate);
+                console.log(loaded, total, progress, rate);
                 rateEle.innerText = rate;
+                p.style.width = rate;
             },
             load: () => {
                 document.getElementById('loading').style.display = 'none';
@@ -59,6 +83,7 @@
             }
         });
     </script>
+    <!-- <script src="http://10.3.53.50:3000/test1.js"></script> -->
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.2/vue.global.js"></script> -->
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> -->
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> -->

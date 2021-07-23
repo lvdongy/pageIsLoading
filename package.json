@@ -4,6 +4,10 @@
   "description": "获得页面资源加载进度",
   "main": "dist/page-is-loading.umd.js",
   "module": "dist/page-is-loading.esm.js",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c rollup.config.js"
