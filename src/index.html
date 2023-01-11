@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,15 +51,16 @@
             <div class="progress-value" id="progress"></div>
         </div>
     </div>
+    <img data-page-is-loading-ignore src="http://10.3.53.50:3000/2000.jpeg">
+    <img src="http://10.3.53.50:3000/3200.jpeg">
     <img src="http://10.3.53.50:3000/3000.jpeg">
     <img src="http://10.3.53.50:3000/3500.jpeg">
-    <img src="http://10.3.53.50:3000/5000.jpeg">
-    <img src="http://10.3.53.50:3000/5500.jpeg">
     <div class="bg"></div>
 
     <!-- <script src="../dist/page-is-loading.min.js"></script> -->
     <script type="module">
-        import pageIsLoading from '../dist/page-is-loading.esm.js'
+        // import pageIsLoading from '../dist/page-is-loading.esm.js'
+        import pageIsLoading from './main.js'
 
         window.onload = () => {
             console.log('window load', Date.now());
@@ -71,6 +72,15 @@
         let rateEle = document.getElementById('rate');
         let p = document.getElementById('progress');
         pageIsLoading({
+            // ignoreImg: /^2/,
+            // ignoreImg: (filename, url) => {
+            //     console.log('--', filename, url);
+            //     return filename.startsWith('2')
+            // },
+            // extraImg: [
+            //     'http://10.3.53.50:8080/img/loading-bg.6e990e7b.jpg',
+            //     'http://10.3.53.50:8080/img/loading-zgl.0faa72a8.png'
+            // ],
             each: (loaded, total, progress, element) => {
                 let rate = Math.floor(progress * 100) + '%'
                 console.log(loaded, total, progress, rate);

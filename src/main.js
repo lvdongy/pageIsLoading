@@ -1,13 +1,14 @@
 // demo
 // pageIsLoading({
 //     el: '.body',
+//     extraImg: [],
+//     ignoreImg: RegExp | function
 //     each: function(loaded, total, progress, element){},
 //     load: function(){}
 // })
-
 function pageIsLoading(options = {}) {
 
-    let { el, each, load } = options;
+    let { el, each, load, extraImg, ignoreImg } = options;
     let allElements = [];
     let allFiles = [];
     let allFilesLen = 0;
@@ -33,10 +34,13 @@ function pageIsLoading(options = {}) {
             element.nodeName === 'IMG' &&
             element.src
         ){
-            allFiles.push({
-                element,
-                src: element.src
-            })
+            // 排除掉要忽略的节点
+            if(canIAddImg(element, element.src, ignoreImg)) {
+                allFiles.push({
+                    element,
+                    src: element.src
+                })
+            }
         }
 
         // 处理背景图片
@@ -49,12 +53,28 @@ function pageIsLoading(options = {}) {
             // 背景图片可能存在多图的情况，这里使用while循环将所有图片url匹配出来，直到mathRes = null
             let mathRes;
             while((mathRes = matchURL.exec(bgSrc))){
-                allFiles.push({
-                    element,
-                    src: mathRes[2] // 真实的图片url，为正则的第二个子表达式
-                })
+                if(canIAddImg(element, mathRes[2], ignoreImg)){
+                   allFiles.push({
+                       element,
+                       src: mathRes[2] // 真实的图片url，为正则的第二个子表达式
+                    })
+                }
             }
         }
+    }
+
+    // 处理额外附加的图片列表
+    if(extraImg && Array.isArray(extraImg)) {
+        allFiles.push(...extraImg.map((url) => {
+            if(typeof url !== 'string') {
+                console.error(`You must pass an image URL: "extraImg"`)
+            }
+            return {
+                element: null,
+                src: url,
+                isExtraImg: true
+            }
+        }))
     }
 
     // 收集完毕，得到需要加载的资源总数
@@ -105,6 +125,40 @@ function runEach(loaded, total, element, fn) {
     }
     let progress = loaded / total;
     fn(loaded, total, progress, element);
+}
+
+/**
+ * 判断当前的图片是否需要监听
+ * @param {DOM} element img节点
+ * @param {string} imgURL 图片地址
+ * @param {RegExp | function} ignoreImg 排除配置
+ * @returns boolean
+ */
+function canIAddImg(element, imgURL, ignoreImg) {
+    if('pageIsLoadingIgnore' in element.dataset) {
+        return false
+    }
+    const imgFileName = getImgFileName(imgURL)
+    if(isRegExp(ignoreImg) && ignoreImg.test(imgFileName)) {
+        return false 
+    }
+    if(typeof ignoreImg === 'function') {
+        return !ignoreImg(imgFileName, imgURL)
+    }
+    return true
+    
+}
+
+function isRegExp(v){
+    return Object.prototype.toString.call(v) === '[object RegExp]'
+}
+
+function getImgFileName(url) {
+    if(!url || typeof url !== 'string') {
+        return ''
+    }
+    // 简单取一下 / 路径最后的字符，并除去 ？ 后面部分
+    return (url.split('/').pop().split('?'))[0] || ''
 }
 
 export default pageIsLoading
