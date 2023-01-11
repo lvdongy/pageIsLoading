@@ -1,5 +1,5 @@
 /*!
- * page-is-loading v1.1.1
+ * page-is-loading v1.1.2
  * Wed Jan 11 2023, lvdongy
  * Released under the MIT License.
  */

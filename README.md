@@ -9,10 +9,10 @@
 
 配合打包工具使用
 ```javascript
-npm i @tools/page-is-loading
+npm i page-is-loading
 ```
 ```javascript
-import pageIsLoading from '@tools/page-is-loading'
+import pageIsLoading from 'page-is-loading'
 ```
 
 或者使用`<script>`标签导入可直接将`dist`目录下的`page-is-loading.min.js`文件拷贝到你的项目中，`page-is-loading.min.js`向外抛出一个`pageIsLoading`函数
