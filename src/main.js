@@ -1,4 +1,3 @@
-// demo
 // pageIsLoading({
 //     el: '.body',
 //     extraImg: [],
